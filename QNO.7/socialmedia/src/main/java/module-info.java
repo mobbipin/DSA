@@ -1,4 +1,4 @@
-module 1 {
+zmodule 1 {
     requires javafx.controls;
     requires javafx.fxml;
 
