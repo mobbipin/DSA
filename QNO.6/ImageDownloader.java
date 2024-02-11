@@ -1,18 +1,28 @@
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.List; // Import the List interface
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 public class ImageDownloader extends JFrame {
 
