@@ -39,7 +39,7 @@ public class ImageDownloader extends JFrame {
         progressBar.setStringPainted(true);
         progressBar.setMinimum(0);
         progressBar.setMaximum(100);
-        progressBar.setVisible(false); // Initially hide the progress bar
+        progressBar.setVisible(false); // TO HIDE THE BAR
 
         JPanel controlPanel = new JPanel(new GridBagLayout());
         controlPanel.setBorder(BorderFactory.createEmptyBorder(10,   10,   10,   10));
@@ -90,7 +90,7 @@ public class ImageDownloader extends JFrame {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
                     currentTask = new DownloadTask(urlObj, selectedFile, progressBar);
-                    progressBar.setVisible(true); // Show the progress bar when starting the download
+                    progressBar.setVisible(true); 
                     executorService.submit(currentTask);
                 }
             } catch (Exception ex) {
@@ -112,7 +112,7 @@ public class ImageDownloader extends JFrame {
             currentTask.cancel(true);
             executorService.shutdownNow();
             currentTask = null;
-            progressBar.setVisible(false); // Hide the progress bar when cancelling the download
+            progressBar.setVisible(false); // THIS IS HERE SO PROGRESS BAR IS SHOWN ONLY WHEN DOWNLOADING
         }
     }
 
