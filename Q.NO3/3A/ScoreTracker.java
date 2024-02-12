@@ -17,7 +17,6 @@ public class ScoreTracker {
             upperHalf.add(score);
         }
 
-        // Balance the heaps
         if (lowerHalf.size() > upperHalf.size() +  1) {
             upperHalf.add(lowerHalf.poll());
         } else if (upperHalf.size() > lowerHalf.size()) {
