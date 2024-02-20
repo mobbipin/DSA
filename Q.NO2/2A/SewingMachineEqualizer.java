@@ -41,9 +41,9 @@ public class SewingMachineEqualizer {
         int[] result = minMovesToEqualize(dresses);
 
         if (result[0] == -1) {
-            System.out.println("Cannot be equalized");
+            System.out.println("THE WORK CANNOT BE EQUALIZED");
         } else {
-            System.out.println("Number of moves: " + result[0]);
+            System.out.println("THE NUMBER OF MOVES WILL BE " + result[0]);
         }
     }
 }

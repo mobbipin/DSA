@@ -50,7 +50,7 @@ public class SpaceshipBuilder {
         int splitCost =  1;
 
         int minTime = minTime(engines, splitCost);
-        System.out.println("Minimum time to build all engines: " + minTime);
+        System.out.println("MINIMUM TIME TO BUILD :  " + minTime);
     }
 }
 
