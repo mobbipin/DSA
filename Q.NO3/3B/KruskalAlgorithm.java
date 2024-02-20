@@ -1,96 +1,92 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PriorityQueue;
 
 class Edge implements Comparable<Edge> {
-    int src, dest, weight;
+    int source, destination, weight;
 
-    public int compareTo(Edge compareEdge) {
-        return this.weight - compareEdge.weight;
+    public Edge(int source, int destination, int weight) {
+        this.source = source;
+        this.destination = destination;
+        this.weight = weight;
+    }
+
+    @Override
+    public int compareTo(Edge other) {
+        return Integer.compare(this.weight, other.weight);
     }
 }
 
-class Subset {
-    int parent, rank;
+class DisjointSet {
+    int[] parent, rank;
+
+    public DisjointSet(int n) {
+        parent = new int[n];
+        rank = new int[n];
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+            rank[i] = 1;
+        }
+    }
+
+    public int find(int u) {
+        if (parent[u] != u) {
+            parent[u] = find(parent[u]);
+        }
+        return parent[u];
+    }
+
+    public void union(int u, int v) {
+        int pu = find(u);
+        int pv = find(v);
+        if (pu != pv) {
+            if (rank[pu] > rank[pv]) {
+                parent[pv] = pu;
+            } else if (rank[pu] < rank[pv]) {
+                parent[pu] = pv;
+            } else {
+                parent[pu] = pv;
+                rank[pv]++;
+            }
+        }
+    }
 }
 
 public class KruskalAlgorithm {
-    int verticesCount;
-    List<Edge> edgesList = new ArrayList<>();
-
-    int find(Subset[] subsets, int i) {
-        if (subsets[i].parent != i)
-            subsets[i].parent = find(subsets, subsets[i].parent);
-        return subsets[i].parent;
-    }
-
-
-    void Union(Subset[] subsets, int x, int y) {
-        int xroot = find(subsets, x);
-        int yroot = find(subsets, y);
-
-        if (subsets[xroot].rank < subsets[yroot].rank)
-            subsets[xroot].parent = yroot;
-        else if (subsets[xroot].rank > subsets[yroot].rank)
-            subsets[yroot].parent = xroot;
-        else {
-            subsets[yroot].parent = xroot;
-            subsets[xroot].rank++;
-        }
-    }
-
-    void kruskalMST() {
-        Collections.sort(edgesList);
-
-        Subset[] subsets = new Subset[verticesCount];
-        for (int i =  0; i < verticesCount; ++i) {
-            subsets[i] = new Subset();
-            subsets[i].parent = i;
-            subsets[i].rank =  0;
-        }
-
+    public static List<Edge> findMinimumSpanningTree(List<Edge> edges, int numVertices) {
+        PriorityQueue<Edge> pq = new PriorityQueue<>(edges);
+        DisjointSet ds = new DisjointSet(numVertices);
         List<Edge> mst = new ArrayList<>();
-        int e =  0; 
-        int numOfEdgesInMST =  0;
 
-        while (e < edgesList.size()) {
-            Edge nextEdge = edgesList.get(e++);
-            int x = find(subsets, nextEdge.src);
-            int y = find(subsets, nextEdge.dest);
+        while (!pq.isEmpty() && mst.size() < numVertices - 1) {
+            Edge edge = pq.poll();
+            int sourceParent = ds.find(edge.source);
+            int destParent = ds.find(edge.destination);
 
-            if (x != y) {
-                mst.add(nextEdge);
-                Union(subsets, x, y);
-                numOfEdgesInMST++;
+            if (sourceParent != destParent) {
+                mst.add(edge);
+                ds.union(sourceParent, destParent);
             }
-
-          
-            if (numOfEdgesInMST == verticesCount -  1)
-                break;
         }
 
-        System.out.println("Minimum spanning tree constructed:");
-        for (int i =  0; i < mst.size(); i++)
-            System.out.println(mst.get(i).src + " -- " + mst.get(i).dest + " == " + mst.get(i).weight);
+        return mst;
     }
 
-   
     public static void main(String[] args) {
-        int verticesCount =  4;
-        KruskalAlgorithm kA = new KruskalAlgorithm(verticesCount);
+        List<Edge> edges = new ArrayList<>();
+        edges.add(new Edge(0, 1, 4));
+        edges.add(new Edge(0, 2, 3));
+        edges.add(new Edge(1, 2, 5));
+        edges.add(new Edge(1, 3, 2));
+        edges.add(new Edge(1, 4, 4));
+        edges.add(new Edge(2, 4, 6));
+        edges.add(new Edge(3, 4, 7));
 
-        kA.addEdge(0,  1,  10);
-        kA.addEdge(0,  2,  6);
-        kA.addEdge(0,  3,  5);
-        kA.addEdge(1,  3,  15);
-        kA.addEdge(2,  3,  4);
+        List<Edge> mst = findMinimumSpanningTree(edges, 5);
 
-        kA.kruskalMST();
-    }
-
-    void addEdge(int src, int dest, int weight) {
-        Edge edge = new Edge();
-        edge.src = src;
-        edge.dest = dest;
-        edge.weight = weight;
-        edgesList.add(edge);
+        System.out.println("Minimum Spanning Tree:");
+        for (Edge edge : mst) {
+            System.out.println(edge.source + " - " + edge.destination + ": " + edge.weight);
+        }
     }
 }

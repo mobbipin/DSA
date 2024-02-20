@@ -25,15 +25,38 @@ public class SalesmanProblem {
     public void solve(double[][] graph, double q) {
         for (int iteration = 0; iteration < numberOfIterations; iteration++) {
             for (Ant ant : colony.getAnts()) {
-    
+                ant.move(graph); // Assuming you have a move method in the Ant class
             }
             colony.updatePheromones(graph, q);
             colony.evaporatePheromones(0.1);
-              //--//
+        }
     }
 
     public double getShortestPathDistance() {
-      ///--THIS GIVE SHORTEST DISTANCE BY ANT--//
-        return 0.0; 
+        double shortestDistance = Double.MAX_VALUE;
+
+        for (Ant ant : colony.getAnts()) {
+            double distance = calculatePathDistance(ant.getPath());
+            if (distance < shortestDistance) {
+                shortestDistance = distance;
+            }
+        }
+
+        return shortestDistance;
+    }
+
+    private double calculatePathDistance(List<Integer> path) {
+        double distance = 0.0;
+
+        for (int i = 0; i < path.size() - 1; i++) {
+            int fromCity = path.get(i);
+            int toCity = path.get(i + 1);
+            distance += graph[fromCity][toCity];
+        }
+
+        // Add distance from the last city back to the starting city
+        distance += graph[path.get(path.size() - 1)][path.get(0)];
+
+        return distance;
     }
 }

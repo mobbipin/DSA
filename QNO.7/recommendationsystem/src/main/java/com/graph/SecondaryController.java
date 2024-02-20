@@ -1,4 +1,4 @@
-package 1;
+package com.graph;
 
 import java.io.IOException;
 import javafx.fxml.FXML;
